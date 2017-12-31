@@ -1,0 +1,34 @@
+#+TITLE: Рационално
+#+STARTUP: showall
+
+** Roadmap
+
+  - [ ] Publish and task for Kamen
+
+** Install
+
+* Библиотеки
+
+  - [ ] redux
+  - [ ] React grid layout
+  - [ ] eslint
+
+* Структура
+
+** TODO - лист със задачи
+
+ - Може да създава, колкото си искаш листове.
+ - Помодоро view
+ - Repeated tasks
+
+** Routine - последователност от задачи
+
+  - Може да създава, колкото си искаш рутини и да имаш такива, които се
+    повтарят.
+
+** Finance app част
+** Counter app част
+** Timer app част
+** Timetable with all the data
+
+граф - натегач, джентълмен, секси, боклук
