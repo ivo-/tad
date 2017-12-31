@@ -4,31 +4,55 @@
 ** Roadmap
 
   - [ ] Publish and task for Kamen
+  - [ ] User should be able to select a timezone
+  - [ ] Repeated tasks should be added on selected time in selected list
+  - [ ] Pomodoro view
+  - [ ] Today is a special list and all repeated go there on 00:01 to simplify?
+  - [ ] Special repeated task view
+  - [ ] Someday is a special list and has move today and copy for today?
+  - [ ] No extra lists? Add extra todos for work/life/buy/sell?
+  - [ ] Pomodoro should be a separate app?
+  - [ ] Routine should be a separate app?
+  - [ ] Make a detailed plan!
 
 ** Install
 
-* Библиотеки
-
   - [ ] redux
-  - [ ] React grid layout
   - [ ] eslint
 
 * Структура
 
-** TODO - лист със задачи
+** TODO - Simple task list
 
  - Може да създава, колкото си искаш листове.
  - Помодоро view
  - Repeated tasks
 
-** Routine - последователност от задачи
+** Pomodoro - List of tasks organized following the pomodoro technique
 
-  - Може да създава, колкото си искаш рутини и да имаш такива, които се
-    повтарят.
+ - You can have tasks and pomodoros
+ - You can assign tasks to pomodoros
+ - Every not completed task will be moved to the next pomorodo
+ - After each pomodoro you will be able to write a report
+ - Read more info about pomodoro workflow (sk)
+
+** Routine - List of tasks organized in routines
+
+ - You can have routines with tasks in them, each with specific time
+ - You can run a routine
+
+** Image - Just an image you want to stay in your grid
+
+** Counter - Simple counter for something
+
+  - You can have title + and -
+  - Option to have only + or both + and -
+  - Option to have max / min values
+  - Option to have multiple countable items (like shopping list)
+
+** Timer - Track how much time you spend doing something
+
+   - You can have title [start] and [stop] buttons
 
 ** Finance app част
-** Counter app част
-** Timer app част
 ** Timetable with all the data
-
-граф - натегач, джентълмен, секси, боклук
