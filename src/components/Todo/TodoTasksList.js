@@ -115,9 +115,7 @@ class TodoTasksList extends React.Component {
   }
 
   render() {
-    const items = this.props.items.filter(item => (
-      this.props.archiveShown ? item.archived : !item.archived
-    )).map(item => (
+    const items = this.props.items.map(item => (
       <div
         key={item.id}
         className={classnames('Todo--list--item', {
@@ -164,9 +162,11 @@ class TodoTasksList extends React.Component {
 }
 
 TodoTasksList.propTypes = {
-  listId: PropTypes.number.isRequired,
+  listId: PropTypes.oneOfType([
+    PropTypes.number.isRequired,
+    PropTypes.string.isRequired,
+  ]).isRequired,
   items: PropTypes.array.isRequired,
-  archiveShown: PropTypes.bool.isRequired,
   addFormShown: PropTypes.bool.isRequired,
 
   onToggleAdd: PropTypes.func.isRequired,

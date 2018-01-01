@@ -46,7 +46,7 @@ export const ROUTINE_TEMPLATE = {
 // =============================================================================
 // TODO
 
-export const POMODORO_LIST = 'POMODORO_LIST';
+export const ARCHIVE_LIST = 'ARCHIVE_LIST';
 export const REPEATED_LIST = 'REPEATED_LIST';
 
 // =============================================================================
@@ -69,6 +69,7 @@ export const defaultState = {
   apps: [{
     id: 1,
     app: TODO_APP,
+    title: 'Tasks list',
     items: [{
       id: 2,
       listId: 5,

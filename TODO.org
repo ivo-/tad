@@ -6,7 +6,6 @@
   - [ ] Publish and task for Kamen
   - [ ] User should be able to select a timezone
   - [ ] Repeated tasks should be added on selected time in selected list
-  - [ ] Pomodoro view
   - [ ] Today is a special list and all repeated go there on 00:01 to simplify?
   - [ ] Special repeated task view
   - [ ] Someday is a special list and has move today and copy for today?
@@ -25,7 +24,6 @@
 ** TODO - Simple task list
 
  - Може да създава, колкото си искаш листове.
- - Помодоро view
  - Repeated tasks
 
 ** Pomodoro - List of tasks organized following the pomodoro technique
@@ -56,3 +54,9 @@
 
 ** Finance app част
 ** Timetable with all the data
+
+* Other
+
+** Paid routines
+** Paid learning pomodoro sessions
+** Marketplace and platform for creators

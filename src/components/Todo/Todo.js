@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { POMODORO_LIST, REPEATED_LIST } from '../../constants';
+import { ARCHIVE_LIST, REPEATED_LIST } from '../../constants';
 import TodoTasksList from './TodoTasksList';
 
 
@@ -12,7 +12,6 @@ class Todo extends React.Component {
 
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
     this.handleSelectList = this.handleSelectList.bind(this);
-    this.handleToggleArchive = this.handleToggleArchive.bind(this);
     this.handleAddTodoTask = this.handleAddTodoTask.bind(this);
     this.handleUpdateTodoTask = this.handleUpdateTodoTask.bind(this);
     this.handleToggleArchiveTodoTask = this.handleToggleArchiveTodoTask.bind(this);
@@ -20,7 +19,6 @@ class Todo extends React.Component {
 
     this.state = {
       addFormShown: false,
-      archiveShown: false,
       selectedList: null,
     };
   }
@@ -46,14 +44,11 @@ class Todo extends React.Component {
   handleSelectList(list) {
     if(this.state.selectedList === list) return;
 
-    if(
-      list === POMODORO_LIST ||
-        list === REPEATED_LIST ||
-        this.props.lists.find(l => l.id === list)
-    ) {
+    if(list === ARCHIVE_LIST
+       || list === REPEATED_LIST
+       || this.props.lists.find(l => l.id === list)) {
       this.setState({
         selectedList: list,
-        archiveShown: false,
       });
     } else {
       throw new Error(`Trying to select unknown TODO list: ${list}`);
@@ -61,11 +56,8 @@ class Todo extends React.Component {
   }
 
   handleToggleAdd() {
+    if(this.state.selectedList === ARCHIVE_LIST) return;
     this.setState({ addFormShown: !this.state.addFormShown });
-  }
-
-  handleToggleArchive() {
-    this.setState({ archiveShown: !this.state.archiveShown });
   }
 
   handleAddTodoTask(...args) {
@@ -98,14 +90,17 @@ class Todo extends React.Component {
       <section className="Todo--menu">
         <button
           onClick={this.handleToggleAdd}
+          disabled={this.state.selectedList === ARCHIVE_LIST}
           className={classnames({ active: this.state.addFormShown })}
         >+</button>
-        <button
-          onClick={this.handleToggleArchive}
-          className={classnames({ active: this.state.archiveShown })}
-        >Archive</button>
         <span className="Todo--menu--separator">|</span>
         {lists}
+        <button
+          onClick={this.handleSelectList.bind(this, ARCHIVE_LIST)}
+          className={classnames({
+            active: ARCHIVE_LIST === this.state.selectedList,
+          })}
+        >Archive</button>
         <span className="Todo--menu--separator">|</span>
         <button
           onClick={this.handleSelectList.bind(this, REPEATED_LIST)}
@@ -113,24 +108,14 @@ class Todo extends React.Component {
             active: REPEATED_LIST === this.state.selectedList,
           })}
         >Repeated</button>
-        <button
-          onClick={this.handleSelectList.bind(this, POMODORO_LIST)}
-          className={classnames({
-            active: POMODORO_LIST === this.state.selectedList,
-          })}
-        >Pomodoro</button>
+
       </section>
     );
   }
 
-  renderPomodoroList() {}
   renderRepeatedList() {}
 
   renderList() {
-    if(this.state.selectedList === POMODORO_LIST) {
-      return this.renderPomodoroList();
-    }
-
     if(this.state.selectedList === REPEATED_LIST) {
       return this.renderRepeatedList();
     }
@@ -139,9 +124,10 @@ class Todo extends React.Component {
       <TodoTasksList
         listId={this.state.selectedList}
         items={this.props.items.filter(item => (
-          this.state.selectedList === item.listId
+          this.state.selectedList !== ARCHIVE_LIST ?
+            this.state.selectedList === item.listId :
+            item.archived
         ))}
-        archiveShown={this.state.archiveShown}
         addFormShown={this.state.addFormShown}
         onToggleAdd={this.handleToggleAdd}
         onAddTodoTask={this.handleAddTodoTask}
@@ -156,8 +142,10 @@ class Todo extends React.Component {
     return (
       <section className="Todo">
         <header>
-          <h1>&#9776; Tasks</h1>
-          <button>&#8942;</button>
+          <h1>
+             <span>&#9776;</span> {this.props.title}
+          </h1>
+          <button className="Todo--options">&#8942;</button>
         </header>
         {this.renderMenu()}
         <section className="Todo--content">
@@ -173,6 +161,7 @@ Todo.propTypes = {
   id: PropTypes.number.isRequired,
   items: PropTypes.array.isRequired,
   lists: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
 
   // Actions
   onAddTodoTask: PropTypes.func.isRequired,
