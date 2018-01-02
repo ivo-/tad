@@ -8,7 +8,6 @@ export const TODO_APP = 'TODO_APP';
 
 export const TODO_LIST_ITEM_TEMPLATE = {
   id: 'number',
-  listId: 'number',
   title: 'string',
   description: 'string',
   date: 'number',
@@ -46,6 +45,8 @@ export const ROUTINE_TEMPLATE = {
 // =============================================================================
 // TODO
 
+export const TODAY_LIST = 'TODAY_LIST';
+export const SOMEDAY_LIST = 'SOMEDAY_LIST';
 export const ARCHIVE_LIST = 'ARCHIVE_LIST';
 export const REPEATED_LIST = 'REPEATED_LIST';
 
@@ -72,38 +73,42 @@ export const defaultState = {
     title: 'Tasks list',
     items: [{
       id: 2,
-      listId: 5,
       title: 'Clean up',
       description: '---',
       date: new Date(),
       done: false,
       archived: false,
+      today: true,
+      repeated: false,
     }, {
       id: 3,
-      listId: 5,
       title: 'Clean up done',
       description: '---|||',
       date: new Date(),
       done: true,
       archived: false,
+      today: true,
+      repeated: false,
     }, {
       id: 4,
-      listId: 5,
       title: 'Clean up someday',
       description: '---|||---',
       date: new Date(),
       done: false,
       archived: false,
-    }],
-    lists: [{
-      id: 5,
-      title: 'Today',
+      today: true,
+      repeated: false,
     }, {
-      id: 6,
-      title: 'Someday',
+      id: 5,
+      title: 'Repeated daily',
+      description: '---|||---',
+      date: new Date(),
+      done: false,
+      archived: false,
+      today: true,
+      repeated: true,
     }],
     itemsArchive: [],
-    listsArchive: [],
 
     // =======================================================================
     // TODO:

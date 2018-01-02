@@ -1,10 +1,11 @@
 export const TODO_ADD_TASK = 'TODO_ADD_TASK';
-export function addTodoTask(appId, listId, { title, description }) {
+export function addTodoTask(appId, { title, description, repeated, today }) {
   return {
     type: TODO_ADD_TASK,
     appId,
-    listId,
     title,
+    today,
+    repeated,
     description,
   };
 }
@@ -37,5 +38,11 @@ export function toggleArchiveTodoTask(appId, taskId) {
   };
 }
 
-export const TODO_CREATE_LIST = 'TODO_CREATE_LIST';
-export const TODO_DELETE_LIST = 'TODO_DELETE_LIST';
+export const TODO_DELETE_TASK = 'TODO_DELETE_TASK';
+export function deleteTodoTask(appId, taskId) {
+  return {
+    type: TODO_DELETE_TASK,
+    appId,
+    taskId
+  };
+}

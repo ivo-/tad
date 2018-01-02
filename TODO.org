@@ -4,15 +4,6 @@
 ** Roadmap
 
   - [ ] Publish and task for Kamen
-  - [ ] User should be able to select a timezone
-  - [ ] Repeated tasks should be added on selected time in selected list
-  - [ ] Today is a special list and all repeated go there on 00:01 to simplify?
-  - [ ] Special repeated task view
-  - [ ] Someday is a special list and has move today and copy for today?
-  - [ ] No extra lists? Add extra todos for work/life/buy/sell?
-  - [ ] Pomodoro should be a separate app?
-  - [ ] Routine should be a separate app?
-  - [ ] Make a detailed plan!
 
 ** Install
 
@@ -23,8 +14,11 @@
 
 ** TODO - Simple task list
 
- - Може да създава, колкото си искаш листове.
- - Repeated tasks
+ - You have only today and someday lists and you can move tasks
+   from today to someday and vice versa
+ - Repeated tasks are a special kinds of tasks you can add for today
+ - If you want to have work/life/buy/sell lists you just have to create
+   a new todo app instance.
 
 ** Pomodoro - List of tasks organized following the pomodoro technique
 

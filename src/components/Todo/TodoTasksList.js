@@ -2,6 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import {
+  TODAY_LIST,
+  // SOMEDAY_LIST,
+  // ARCHIVE_LIST,
+  REPEATED_LIST,
+} from '../../constants';
 
 class TodoTasksList extends React.Component {
   constructor(props) {
@@ -55,7 +61,12 @@ class TodoTasksList extends React.Component {
     form.reset();
     if(this.props.addFormShown) {
       this.props.onToggleAdd();
-      this.props.onAddTodoTask(this.props.listId, { title, description });
+      this.props.onAddTodoTask({
+        title,
+        today: this.props.list === TODAY_LIST,
+        repeated: this.props.list === REPEATED_LIST,
+        description,
+      });
     } else if(this.state.editedItem) {
       this.props.onUpdateTodoTask(this.state.editedItem, { title, description });
       this.handleEdit(null);
@@ -114,6 +125,42 @@ class TodoTasksList extends React.Component {
     );
   }
 
+  renderExtra(item) {
+    if(item.repeated) {
+      return (
+        <button key="someday" onClick={
+          this.props.onAddTodoTask.bind(this, {
+            title: item.title,
+            today: true,
+            repeated: false,
+            description: item.description,
+          })
+        }>→ add for today</button>
+      );
+    }
+
+    const results = [];
+    if(item.today) results.push(
+      <button key="someday" onClick={
+        this.props.onUpdateTodoTask.bind(this, item.id, { today: false })
+      }>→ someday</button>
+    );
+
+    if(!item.today) results.push(
+      <button key="today" onClick={
+        this.props.onUpdateTodoTask.bind(this, item.id, { today: true })
+      }>→ today</button>
+    );
+
+    if(item.archived) results.push(
+      <button key="delete" className="attention" onClick={
+        this.props.onDeleteTodoTask.bind(this, item.id)
+      }>delete!</button>
+    );
+
+    return results;
+  }
+
   render() {
     const items = this.props.items.map(item => (
       <div
@@ -136,6 +183,7 @@ class TodoTasksList extends React.Component {
           className={classnames({ active: item.archived })}
           onClick={this.props.onToggleArchiveTodoTask.bind(this, item.id)}
         >✖</button>
+        {this.renderExtra(item)}
         <button
           className="Todo--list--item--options--toggle"
           onClick={this.handleToggleOptions.bind(this, item.id)}
@@ -162,15 +210,13 @@ class TodoTasksList extends React.Component {
 }
 
 TodoTasksList.propTypes = {
-  listId: PropTypes.oneOfType([
-    PropTypes.number.isRequired,
-    PropTypes.string.isRequired,
-  ]).isRequired,
+  list: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
   addFormShown: PropTypes.bool.isRequired,
 
   onToggleAdd: PropTypes.func.isRequired,
   onAddTodoTask: PropTypes.func.isRequired,
+  onDeleteTodoTask: PropTypes.func.isRequired,
   onUpdateTodoTask: PropTypes.func.isRequired,
   onToggleArchiveTodoTask: PropTypes.func.isRequired,
   onToggleCompleteTodoTask: PropTypes.func.isRequired,

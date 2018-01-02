@@ -1,5 +1,6 @@
 import {
   TODO_ADD_TASK,
+  TODO_DELETE_TASK,
   TODO_UPDATE_TASK,
   TODO_TOGGLE_ARCHIVE_TASK,
   TODO_TOGGLE_COMPLETE_TASK,
@@ -17,12 +18,13 @@ export default function todo(state, action) {
         items: [
           {
             id: getUID(),
-            listId: action.listId,
             title: action.title,
             description: action.description || '',
             date: new Date(),
             done: false,
+            today: action.today || false,
             archived: false,
+            repeated: action.repeated || false,
           },
           ...state.items,
         ],
@@ -60,6 +62,14 @@ export default function todo(state, action) {
           if(item.id !== action.taskId) return item;
           return { ...item, done: !item.done };
         }),
+      };
+
+    case TODO_DELETE_TASK:
+      if(state.id !== action.appId) return state;
+
+      return {
+        ...state,
+        items: state.items.filter((item) => item.id !== action.taskId),
       };
 
     default: return state;

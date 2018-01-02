@@ -1,4 +1,11 @@
-button.active {
-  color: white;
-  background-color: black;
+button {
+  &.active {
+    color: white;
+    background-color: black;
+  }
+
+  &.attention {
+    color: white;
+    background-color: maroon;
+  }
 }
