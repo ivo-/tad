@@ -28,3 +28,12 @@ export function getUID() {
 
 getUID.__initial = 100;
 getUID.__current = null;
+
+/**
+ * Pretty prints duration in minutes.
+ * @param {Number} duration In milliseconds.
+ * @return {String}
+ */
+export function prettyPrintInMinutes(duration) {
+  return `${Math.round(duration / 1000 / 60)}min`;
+}

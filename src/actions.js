@@ -1,3 +1,6 @@
+// =============================================================================
+// TODO
+
 export const TODO_ADD_TASK = 'TODO_ADD_TASK';
 export function addTodoTask(appId, { title, description, repeated, today }) {
   return {
@@ -44,5 +47,38 @@ export function deleteTodoTask(appId, taskId) {
     type: TODO_DELETE_TASK,
     appId,
     taskId
+  };
+}
+
+// =============================================================================
+// Routine
+
+export const ROUTINE_ADD_TASK = 'ROUTINE_ADD_TASK';
+export function addRoutineTask(appId, { title, duration, description}) {
+  return {
+    type: ROUTINE_ADD_TASK,
+    appId,
+    title,
+    duration,
+    description,
+  };
+}
+
+export const ROUTINE_DELETE_TASK = 'ROUTINE_DELETE_TASK';
+export function deleteRoutineTask(appId, taskId) {
+  return {
+    type: ROUTINE_DELETE_TASK,
+    appId,
+    taskId,
+  };
+}
+
+export const ROUTINE_UPDATE_TASK = 'ROUTINE_UPDATE_TASK';
+export function updateRoutineTask(appId, taskId, fields) {
+  return {
+    type: ROUTINE_UPDATE_TASK,
+    appId,
+    taskId,
+    fields,
   };
 }

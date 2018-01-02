@@ -46,6 +46,8 @@
 
    - You can have title [start] and [stop] buttons
 
+** Streaks - Track daily streaks for something
+
 ** Finance app част
 ** Timetable with all the data
 

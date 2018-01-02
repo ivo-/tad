@@ -2,6 +2,7 @@
 // Applications
 
 export const TODO_APP = 'TODO_APP';
+export const ROUTINE_APP = 'ROUTINE_APP';
 
 // =============================================================================
 // Templates
@@ -54,8 +55,8 @@ export const REPEATED_LIST = 'REPEATED_LIST';
 // Streaks
 
 export const STREAK_DONE = 0;
-export const STREAK_NOT_DONE = 1;
 export const STREAK_SKIP = 2;
+export const STREAK_NOT_DONE = 1;
 
 // =============================================================================
 // Default state
@@ -109,47 +110,40 @@ export const defaultState = {
       repeated: true,
     }],
     itemsArchive: [],
-
-    // =======================================================================
-    // TODO:
-    //
-    //   - [ ] repeating tasks weekly and select list to add the task
-    //
-    repeated: [],
-
-    // =======================================================================
-    // TODO:
-    //
-    //   - [ ] Stats - pomodors per day, descriptions after pomodoro
-    //
-    // pomodoro: {
-    //   current: null,
-    //   archive: [],
-    // },
-  }]
-
-  // apps: {
-    // streak: {
-    //   items: [],
-    //   archive: [],
-    // },
-
-    // TODO:
-    //
-    //  - [ ] Routine streak view
-    //  - [ ] Morning routine
-    //  - [ ] Other routine as todo item
-    //
-    // routine: {
-    //   items: [],
-    //   archive: [],
-
-    //   // =======================================================================
-    //   play: {
-    //     routineId: 1,
-    //     time: 0,
-
-    //   }
-    // }
-  // }
+  }, {
+    id: 11,
+    app: ROUTINE_APP,
+    title: 'Morning routine',
+    items: [{
+      id: 12,
+      title: 'Wash your face and teeth',
+      description: '---',
+      duration: 1000 * 60 * 5,
+      date: new Date(),
+    }, {
+      id: 13,
+      title: 'Cleanup your room',
+      description: '---',
+      duration: 1000 * 60 * 5,
+      date: new Date(),
+    }, {
+      id: 14,
+      title: 'Meditate',
+      description: '---',
+      duration: 1000 * 60 * 10,
+      date: new Date(),
+    }, {
+      id: 15,
+      title: 'Dress up and get ready to go out',
+      description: '---',
+      duration: 1000 * 60 * 10,
+      date: new Date(),
+    }, {
+      id: 16,
+      title: 'Make breakfast',
+      description: '---',
+      duration: 1000 * 60 * 20,
+      date: new Date(),
+    }],
+  }],
 }
