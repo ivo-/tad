@@ -37,3 +37,14 @@ getUID.__current = null;
 export function prettyPrintInMinutes(duration) {
   return `${Math.round(duration / 1000 / 60)}min`;
 }
+
+/**
+ * Pretty prints duration in minutes and seconds.
+ * @param {Number} duration In milliseconds.
+ * @return {String}
+ */
+export function prettyPrintInMinutesAndSeconds(duration) {
+  const min = Math.floor(duration / 1000 / 60);
+  const sec = Math.floor((duration - min * 1000 * 60) / 1000);
+  return `${min ? `${min}min` : ''} ${sec ? `${sec}s` : (min ? '' : '0s')}`;
+}

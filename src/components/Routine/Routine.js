@@ -3,19 +3,14 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames' ;
 
 import {
-  prettyPrintInMinutes
+  prettyPrintInMinutes,
+  prettyPrintInMinutesAndSeconds,
 } from '../../util';
 
 // TODO:
 //
-//  - [ ] Store routine result
-//  - [ ] Show time in task
-//  - [ ] Add ability to pause
-//  - [ ] Show next task name
-//  - [ ] Show past routine executions
 //  - [ ] Show daily streak
 //
-
 
 class Routine extends React.Component {
   constructor(props) {
@@ -27,6 +22,7 @@ class Routine extends React.Component {
     this.handleNextTask = this.handleNextTask.bind(this);
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
     this.handleToggleRun = this.handleToggleRun.bind(this);
+    this.handleToggleHistory = this.handleToggleHistory.bind(this);
 
     this.handleAddRoutineTask = this.handleAddRoutineTask.bind(this);
     this.handleDeleteRoutineTask = this.handleDeleteRoutineTask.bind(this);
@@ -36,6 +32,7 @@ class Routine extends React.Component {
       running: null,
       editedItem: null,
       addFormShown: false,
+      historyShown: false,
     };
   }
 
@@ -46,34 +43,12 @@ class Routine extends React.Component {
     this.setState({ editedItem: id });
   }
 
-  handleToggleRun() {
-    if(this.state.running) {
-      window.clearInterval(this.state.running.timer);
-      this.setState({ running: null });
-    } else {
-      this.setState({
-        running: {
-          start: (new Date()).getTime(),
-          timer: window.setInterval(this.forceUpdate.bind(this), 1000),
-          currentTask: 0,
-        },
-      });
-    }
-  }
-
-  handleNextTask() {
-    if(!this.state.running) return;
-
-    this.setState({
-      running: {
-        ...this.state.running,
-        currentTask: this.state.running.currentTask + 1,
-      },
-    });
-  }
-
   handleToggleAdd() {
     this.setState({ addFormShown: !this.state.addFormShown });
+  }
+
+  handleToggleHistory() {
+    this.setState({ historyShown: !this.state.historyShown });
   }
 
   handleAddRoutineTask(...args) {
@@ -86,6 +61,65 @@ class Routine extends React.Component {
 
   handleUpdateRoutineTask(...args) {
     this.props.onUpdateRoutineTask(this.props.id, ...args);
+  }
+
+  handleAddRoutineHistory(...args) {
+    this.props.onAddRoutineHistory(this.props.id, ...args);
+  }
+
+  handleToggleRun() {
+    if(this.state.running) {
+      window.clearInterval(this.state.running.timer);
+      this.setState({ running: null });
+    } else {
+      this.setState({
+        historyShown: false,
+        running: {
+          end: null,
+          start: +(new Date()),
+          timer: window.setInterval(this.forceUpdate.bind(this), 1000),
+          currentTask: 0,
+          tasksTimes: {}
+        },
+      });
+    }
+  }
+
+  handleNextTask() {
+    if(!this.state.running) return;
+    if(this.state.running.end) return;
+
+    const nextItemIndex = this.state.running.currentTask + 1;
+    const nextItem = this.props.items[nextItemIndex];
+    const currentItem = this.props.items[this.state.running.currentTask];
+
+    if(!nextItem) {
+      const nextState = {
+        running: {
+          ...this.state.running,
+          end: +(new Date()),
+          timer: null,
+        },
+      };
+
+      window.clearInterval(this.state.running.timer);
+      this.handleAddRoutineHistory({
+        end: nextState.running.end,
+        start: nextState.running.start,
+      });
+      this.setState(nextState);
+    } else {
+      this.setState({
+        running: {
+          ...this.state.running,
+          currentTask: nextItemIndex,
+          tasksTimes: {
+            ...this.state.running.tasksTimes,
+            [currentItem.id]: +(new Date()),
+          }
+        },
+      });
+    }
   }
 
   handleFormSubmit(e) {
@@ -193,13 +227,26 @@ class Routine extends React.Component {
         <button
           onClick={this.handleToggleRun}
           className={classnames({ active: this.state.running })}
-        >Start</button>
+        >{(() => {
+          if (this.state.running) {
+            if(this.state.running.end) return 'End';
+            return 'Stop';
+          } else {
+            return 'Start';
+          }
+        })()}</button>
+        <button
+          onClick={this.handleToggleHistory}
+          disabled={!!this.state.running}
+          className={classnames({ active: this.state.historyShown })}
+        >History</button>
       </section>
     );
   }
 
   renderStats() {
     if(this.state.running) return null;
+    if(this.state.historyShown) return null;
 
     const totalDuration = this.props.items.reduce((result, item) => (
       result + item.duration
@@ -215,23 +262,52 @@ class Routine extends React.Component {
   renderRunView() {
     if(!this.state.running) return null;
 
-    const { start, currentTask } = this.state.running;
-    const timePassed = Math.round(
-      (((new Date()) - start)) / 1000
-    );
+    const { start, currentTask, tasksTimes } = this.state.running;
+
     const item = this.props.items[currentTask];
+    const nextItem = this.props.items[currentTask + 1];
+
+    const timePassedTotal = (new Date()) - start;
+    const timePassedSinceTaskStart = currentTask === 0 ? timePassedTotal : (
+      (new Date()) - tasksTimes[this.props.items[currentTask - 1].id]
+    );
+
+    if(this.state.running.end) {
+      return (
+        <div className="Routine--run">
+          Total time - {prettyPrintInMinutesAndSeconds(timePassedTotal)} <br />
+        </div>
+      );
+    }
 
     return (
-      <div className="Routine-run">
-        {timePassed}s <br />
-        {item.title}
-        <button onClick={this.handleNextTask}>next</button>
+      <div className="Routine--run">
+        <div className="Routine--run--current">
+          [{prettyPrintInMinutesAndSeconds(timePassedSinceTaskStart)} /
+           {prettyPrintInMinutes(item.duration)}] {item.title}
+        </div>
+        <button onClick={this.handleNextTask}>{
+          nextItem ? 'Next' : 'Finish'
+        }</button>
+        {nextItem && `→ ${nextItem.title}`}
       </div>
     )
   }
 
+  renderHistory() {
+    if(!this.state.historyShown) return null;
+
+    return this.props.history.map((item, i) => (
+      <div key={i} className="Routine--history--item">
+        {(new Date(item.start)).toString()} - {(new Date(item.end)).toString()}
+      </div>
+    ));
+  }
+
   renderList() {
     if(this.state.running) return null;
+    if(this.state.historyShown) return null;
+
     return this.props.items.map(item => (
       <div key={item.id} className="Routine--list--item">
         <button>☰</button> [{prettyPrintInMinutes(item.duration)}] {item.title}
@@ -260,6 +336,7 @@ class Routine extends React.Component {
           {this.renderStats()}
           {this.renderList()}
           {this.renderRunView()}
+          {this.renderHistory()}
         </section>
       </section>
     );
@@ -271,11 +348,13 @@ Routine.propTypes = {
   id: PropTypes.number.isRequired,
   items: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
+  history: PropTypes.array.isRequired,
 
   // Actions
   onAddRoutineTask: PropTypes.func.isRequired,
   onDeleteRoutineTask: PropTypes.func.isRequired,
   onUpdateRoutineTask: PropTypes.func.isRequired,
+  onAddRoutineHistory: PropTypes.func.isRequired,
 };
 
 export default Routine;

@@ -2,6 +2,7 @@ import {
   ROUTINE_ADD_TASK,
   ROUTINE_DELETE_TASK,
   ROUTINE_UPDATE_TASK,
+  ROUTINE_ADD_HISTORY
 } from '../../actions';
 
 import { getUID } from '../../util';
@@ -43,6 +44,17 @@ export default function todo(state, action) {
 
           return { ...item, ...action.fields };
         }),
+      };
+
+    case ROUTINE_ADD_HISTORY:
+      if(state.id !== action.appId) return state;
+
+      return {
+        ...state,
+        history: [...state.history, {
+          start: action.start,
+          end: action.end,
+        }]
       };
 
     default: return state;

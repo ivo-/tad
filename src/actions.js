@@ -82,3 +82,13 @@ export function updateRoutineTask(appId, taskId, fields) {
     fields,
   };
 }
+
+export const ROUTINE_ADD_HISTORY = 'ROUTINE_ADD_HISTORY';
+export function addRoutineHistory(appId, { start, end }) {
+  return {
+    type: ROUTINE_ADD_HISTORY,
+    appId,
+    start,
+    end,
+  };
+}

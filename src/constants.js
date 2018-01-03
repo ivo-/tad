@@ -109,7 +109,6 @@ export const defaultState = {
       today: true,
       repeated: true,
     }],
-    itemsArchive: [],
   }, {
     id: 11,
     app: ROUTINE_APP,
@@ -144,6 +143,10 @@ export const defaultState = {
       description: '---',
       duration: 1000 * 60 * 20,
       date: new Date(),
+    }],
+    history: [{
+      start: (new Date()).getTime(),
+      end: (new Date()).getTime(),
     }],
   }],
 }
