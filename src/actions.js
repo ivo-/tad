@@ -92,3 +92,45 @@ export function addRoutineHistory(appId, { start, end }) {
     end,
   };
 }
+
+// =============================================================================
+// Timers
+
+export const TIMERS_ADD_TIMER = 'TIMERS_ADD_TIMER';
+export function addTimer(appId, title) {
+  return {
+    type: TIMERS_ADD_TIMER,
+    appId,
+    title,
+  };
+}
+
+export const TIMERS_DELETE_TIMER = 'TIMERS_DELETE_TIMER';
+export function deleteTimer(appId, timerId) {
+  return {
+    type: TIMERS_DELETE_TIMER,
+    appId,
+    timerId,
+  };
+}
+
+export const TIMERS_UPDATE_TIMER = 'TIMERS_UPDATE_TIMER';
+export function updateTimer(appId, timerId, title) {
+  return {
+    type: TIMERS_UPDATE_TIMER,
+    appId,
+    timerId,
+    title,
+  };
+}
+
+export const TIMERS_ADD_HISTORY = 'TIMERS_ADD_HISTORY';
+export function addTimerHistory(appId, timerId, { start, end }) {
+  return {
+    type: TIMERS_ADD_HISTORY,
+    appId,
+    timerId,
+    start,
+    end,
+  };
+}
