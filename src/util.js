@@ -66,3 +66,45 @@ export function getParentForm(node) {
   if(!node) return null;
   return node.tagName === 'FORM' ? node : getParentForm(node.parentNode);
 }
+
+export function getZeroBasedNum(num) {
+  return num < 10 ? `0${num}` : num;
+}
+
+export const monthNumToName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+                               'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+export function timestampToDayAndMonth(timestamp) {
+  const time = new Date(timestamp);
+  return `${
+    getZeroBasedNum(time.getDate())
+  } ${
+    monthNumToName[time.getMonth()]
+  }`;
+}
+
+export function isDayToday(day) {
+  const date = new Date(day);
+  const today = new Date();
+
+  return date.getDate() === today.getDate()
+    && date.getMonth() === today.getMonth()
+    && date.getYear() === today.getYear();
+}
+
+/**
+ * Returns array of `2*n + 1` timestamps - `n` days before and
+ * `n` days after the provided timestamp.
+ * @param {Number} day
+ * @param {Number} n
+ * @return {Array}
+ */
+export function getDaysAround(day, n) {
+  const oneDay = 1000 * 60 * 60 * 24;
+
+  return [...Array(n)].reduce((result, _, i) => ([
+    result[0] - oneDay,
+    ...result,
+    result[result.length - 1] + oneDay
+  ]), [day]);
+}

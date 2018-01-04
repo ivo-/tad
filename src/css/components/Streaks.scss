@@ -1,0 +1,22 @@
+.Streaks {
+  &--list--item--days {
+    width: 100%;
+    height: 65px;
+    padding: 5px 10px;
+    overflow-x: scroll;
+    white-space: nowrap;
+    box-sizing: border-box;
+
+    &--day {
+      display: inline-block;
+    }
+
+    .today {
+      color: blue;
+    }
+
+    .created-at-day {
+      font-weight: bold;
+    }
+  }
+}

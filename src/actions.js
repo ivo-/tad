@@ -167,10 +167,10 @@ export function updateStreak(appId, streakId, title) {
   };
 }
 
-export const STREAKS_ADD_STREAK_HISTORY = 'STREAKS_ADD_STREAK_HISTORY';
-export function addStreakHistory(appId, streakId, date) {
+export const STREAKS_TOGGLE_STREAK_HISTORY = 'STREAKS_TOGGLE_STREAK_HISTORY';
+export function toggleStreakHistory(appId, streakId, date) {
   return {
-    type: STREAKS_ADD_STREAK_HISTORY,
+    type: STREAKS_TOGGLE_STREAK_HISTORY,
     appId,
     streakId,
     date,

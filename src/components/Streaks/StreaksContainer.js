@@ -5,7 +5,7 @@ import {
   addStreak,
   deleteStreak,
   updateStreak,
-  addStreakHistory,
+  toggleStreakHistory,
 } from '../../actions'
 
 export default connect((state, { id }) => {
@@ -14,5 +14,5 @@ export default connect((state, { id }) => {
   onAddStreak: addStreak,
   onDeleteStreak: deleteStreak,
   onUpdateStreak: updateStreak,
-  onAddStreakHistory: addStreakHistory,
+  onToggleStreakHistory: toggleStreakHistory,
 })(Streaks);

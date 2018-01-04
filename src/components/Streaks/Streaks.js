@@ -4,7 +4,10 @@ import classnames from 'classnames' ;
 
 import {
   now,
+  isDayToday,
   getParentForm,
+  getDaysAround,
+  timestampToDayAndMonth,
   prettyPrintInMinutesAndSeconds,
 } from '../../util';
 
@@ -20,7 +23,7 @@ class Streaks extends React.Component {
     this.handleAddStreak = this.handleAddStreak.bind(this);
     this.handleDeleteStreak = this.handleDeleteStreak.bind(this);
     this.handleUpdateStreak = this.handleUpdateStreak.bind(this);
-    this.handleAddStreakHistory = this.handleAddStreakHistory.bind(this);
+    this.handleToggleStreakHistory = this.handleToggleStreakHistory.bind(this);
 
     this.state = {
       editedItem: null,
@@ -51,8 +54,8 @@ class Streaks extends React.Component {
     this.props.onUpdateStreak(this.props.id, ...args);
   }
 
-  handleAddStreakHistory(...args) {
-    this.props.onAddStreakHistory(this.props.id, ...args);
+  handleToggleStreakHistory(...args) {
+    this.props.onToggleStreakHistory(this.props.id, ...args);
   }
 
   handleFormSubmit(e) {
@@ -122,17 +125,41 @@ class Streaks extends React.Component {
   }
 
   render() {
-    const items = this.props.items.map(item => (
-      <div key={item.id} className="Streaks--list--item">
-        <button>☰</button> {item.title}
-        <button
-          onClick={this.handleEdit.bind(this, item.id)}
-        >✎</button>
-        <button
-          onClick={this.handleDeleteStreak.bind(this, item.id)}
-        >✖</button>
-      </div>
-    ));
+    const items = this.props.items.map(item => {
+      const days = getDaysAround(item.date, 10).filter(day => (
+        day >= item.date
+      )).map(day => (
+        <div
+          key={day}
+          className={classnames('Streaks--list--item--days--day', {
+            today: isDayToday(day),
+            'created-at-day': day === item.date,
+          })}
+        >
+          {timestampToDayAndMonth(day)} <br />
+          <input
+            type="checkbox"
+            checked={!!item.history.find(h => h === day)}
+            onChange={this.handleToggleStreakHistory.bind(this, item.id, day)}
+          />
+        </div>
+      ));
+
+      return (
+        <div key={item.id} className="Streaks--list--item">
+          <button>☰</button> {item.title}
+          <button
+            onClick={this.handleEdit.bind(this, item.id)}
+          >✎</button>
+          <button
+            onClick={this.handleDeleteStreak.bind(this, item.id)}
+          >✖</button>
+          <div className="Streaks--list--item--days">
+            {days}
+          </div>
+        </div>
+      );
+    });
 
     return (
       <section className="App Streaks">
@@ -165,7 +192,7 @@ Streaks.propTypes = {
   onAddStreak: PropTypes.func.isRequired,
   onDeleteStreak: PropTypes.func.isRequired,
   onUpdateStreak: PropTypes.func.isRequired,
-  onAddStreakHistory: PropTypes.func.isRequired,
+  onToggleStreakHistory: PropTypes.func.isRequired,
 };
 
 export default Streaks;

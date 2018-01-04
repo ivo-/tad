@@ -2,7 +2,7 @@ import {
   STREAKS_ADD_STREAK,
   STREAKS_DELETE_STREAK,
   STREAKS_UPDATE_STREAK,
-  STREAKS_ADD_STREAK_HISTORY,
+  STREAKS_TOGGLE_STREAK_HISTORY,
 } from '../../actions';
 
 import { getUID } from '../../util';
@@ -44,13 +44,21 @@ export default function streaks(state, action) {
         }),
       };
 
-    case STREAKS_ADD_STREAK_HISTORY:
+    case STREAKS_TOGGLE_STREAK_HISTORY:
       if(state.id !== action.appId) return state;
 
       return {
         ...state,
         items: state.items.map((item) => {
           if(item.id !== action.streakId) return item;
+
+          if(item.history.includes(action.date)) {
+            return {
+              ...item,
+              history: item.history.filter(d => d !== action.date)
+            };
+          }
+
           return {
             ...item,
             history: [
