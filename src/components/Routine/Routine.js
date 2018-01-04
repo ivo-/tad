@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames' ;
 
 import {
+  now,
+  getParentForm,
   prettyPrintInMinutes,
   prettyPrintInMinutesAndSeconds,
 } from '../../util';
@@ -76,7 +78,7 @@ class Routine extends React.Component {
         historyShown: false,
         running: {
           end: null,
-          start: +(new Date()),
+          start: now(),
           timer: window.setInterval(this.forceUpdate.bind(this), 1000),
           currentTask: 0,
           tasksTimes: {}
@@ -97,7 +99,7 @@ class Routine extends React.Component {
       const nextState = {
         running: {
           ...this.state.running,
-          end: +(new Date()),
+          end: now(),
           timer: null,
         },
       };
@@ -115,7 +117,7 @@ class Routine extends React.Component {
           currentTask: nextItemIndex,
           tasksTimes: {
             ...this.state.running.tasksTimes,
-            [currentItem.id]: +(new Date()),
+            [currentItem.id]: now(),
           }
         },
       });
@@ -123,10 +125,7 @@ class Routine extends React.Component {
   }
 
   handleFormSubmit(e) {
-    const form = (function recur(node) {
-      if(!node) return null;
-      return node.tagName === 'FORM' ? node : recur(node.parentNode);
-    })(e.currentTarget);
+    const form = getParentForm(e.currentTarget);
 
     if(!form) return;
 
@@ -267,9 +266,9 @@ class Routine extends React.Component {
     const item = this.props.items[currentTask];
     const nextItem = this.props.items[currentTask + 1];
 
-    const timePassedTotal = (new Date()) - start;
+    const timePassedTotal = now() - start;
     const timePassedSinceTaskStart = currentTask === 0 ? timePassedTotal : (
-      (new Date()) - tasksTimes[this.props.items[currentTask - 1].id]
+      now() - tasksTimes[this.props.items[currentTask - 1].id]
     );
 
     if(this.state.running.end) {

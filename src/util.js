@@ -56,3 +56,13 @@ export function prettyPrintInMinutesAndSeconds(duration) {
 export function now() {
   return +(new Date());
 }
+
+/**
+ * Returns current timestamp.
+ * @param {HTMLElement?} node
+ * @return {HTMLElement?}
+ */
+export function getParentForm(node) {
+  if(!node) return null;
+  return node.tagName === 'FORM' ? node : getParentForm(node.parentNode);
+}

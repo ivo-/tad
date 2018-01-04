@@ -9,6 +9,9 @@ import {
   REPEATED_LIST,
 } from '../../constants';
 
+import { getParentForm } from '../../util';
+
+
 class TodoTasksList extends React.Component {
   constructor(props) {
     super(props);
@@ -46,11 +49,7 @@ class TodoTasksList extends React.Component {
   }
 
   handleFormSubmit(e) {
-    const form = (function recur(node) {
-      if(!node) return null;
-      return node.tagName === 'FORM' ? node : recur(node.parentNode);
-    })(e.currentTarget);
-
+    const form = getParentForm(e.currentTarget);
     if(!form) return;
 
     const title = form.querySelector('[name=title]').value.trim();

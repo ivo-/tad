@@ -4,6 +4,7 @@ import classnames from 'classnames' ;
 
 import {
   now,
+  getParentForm,
   prettyPrintInMinutesAndSeconds,
 } from '../../util';
 
@@ -99,10 +100,7 @@ class Timers extends React.Component {
   }
 
   handleFormSubmit(e) {
-    const form = (function recur(node) {
-      if(!node) return null;
-      return node.tagName === 'FORM' ? node : recur(node.parentNode);
-    })(e.currentTarget);
+    const form = getParentForm(e.currentTarget);
     if(!form) return;
 
     const title = form.querySelector('[name=title]').value.trim();
