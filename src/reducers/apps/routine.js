@@ -7,7 +7,7 @@ import {
 
 import { getUID } from '../../util';
 
-export default function todo(state, action) {
+export default function routine(state, action) {
   switch (action.type) {
     case ROUTINE_ADD_TASK:
       if(state.id !== action.appId) return state;
