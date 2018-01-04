@@ -48,3 +48,11 @@ export function prettyPrintInMinutesAndSeconds(duration) {
   const sec = Math.floor((duration - min * 1000 * 60) / 1000);
   return `${min ? `${min}min` : ''} ${sec ? `${sec}s` : (min ? '' : '0s')}`;
 }
+
+/**
+ * Returns current timestamp.
+ * @return {Number}
+ */
+export function now() {
+  return +(new Date());
+}

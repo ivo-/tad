@@ -2,6 +2,7 @@
 // Applications
 
 export const TODO_APP = 'TODO_APP';
+export const TIMERS_APP = 'TIMERS_APP';
 export const ROUTINE_APP = 'ROUTINE_APP';
 
 // =============================================================================
@@ -147,6 +148,19 @@ export const defaultState = {
     history: [{
       start: (new Date()).getTime(),
       end: (new Date()).getTime(),
+    }],
+  }, {
+    id: 21,
+    app: TIMERS_APP,
+    title: 'Continuous Activities',
+    items: [{
+      id: 22,
+      title: 'Meditation',
+      date: new Date(),
+      history: [{
+        start: (new Date()).getTime() - 1000 * 60 * 10,
+        end: (new Date()).getTime(),
+      }],
     }],
   }],
 }

@@ -3,15 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect';
 
-import { TODO_APP, ROUTINE_APP } from '../constants';
+import {
+  TODO_APP,
+  TIMERS_APP,
+  ROUTINE_APP,
+} from '../constants';
 
 import TodoContainer from './Todo/TodoContainer';
+import TimersContainer from './Timers/TimersContainer';
 import RoutineContainer from './Routine/RoutineContainer';
 import Header from './Header';
 import Detached from './Detached';
 
 const appTypeToComponent = {
   [TODO_APP]: TodoContainer,
+  [TIMERS_APP]: TimersContainer,
   [ROUTINE_APP]: RoutineContainer,
 };
 
