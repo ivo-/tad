@@ -7,7 +7,7 @@ import {
 
 import { getUID } from '../../util';
 
-export default function todo(state, action) {
+export default function timers(state, action) {
   switch (action.type) {
     case TIMERS_ADD_TIMER:
       if(state.id !== action.appId) return state;
