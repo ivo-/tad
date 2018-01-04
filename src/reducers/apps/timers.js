@@ -5,7 +5,7 @@ import {
   TIMERS_ADD_HISTORY,
 } from '../../actions';
 
-import { getUID } from '../../util';
+import { getUID, now } from '../../util';
 
 export default function timers(state, action) {
   switch (action.type) {
@@ -18,7 +18,7 @@ export default function timers(state, action) {
           {
             id: getUID(),
             title: action.title,
-            date: new Date(),
+            date: now,
             history: [],
           },
           ...state.items,

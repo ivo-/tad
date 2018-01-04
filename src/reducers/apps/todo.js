@@ -6,7 +6,7 @@ import {
   TODO_TOGGLE_COMPLETE_TASK,
 } from '../../actions';
 
-import { getUID } from '../../util';
+import { getUID, now } from '../../util';
 
 export default function todo(state, action) {
   switch (action.type) {
@@ -20,7 +20,7 @@ export default function todo(state, action) {
             id: getUID(),
             title: action.title,
             description: action.description || '',
-            date: new Date(),
+            date: now(),
             done: false,
             today: action.today || false,
             archived: false,

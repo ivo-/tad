@@ -5,7 +5,7 @@ import {
   ROUTINE_ADD_HISTORY
 } from '../../actions';
 
-import { getUID } from '../../util';
+import { getUID, now } from '../../util';
 
 export default function routine(state, action) {
   switch (action.type) {
@@ -20,7 +20,7 @@ export default function routine(state, action) {
             title: action.title,
             duration: action.duration,
             description: action.description || '',
-            date: new Date(),
+            date: now(),
           },
           ...state.items,
         ],
