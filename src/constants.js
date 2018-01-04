@@ -1,9 +1,12 @@
+import { now } from './util';
+
 // =============================================================================
 // Applications
 
 export const TODO_APP = 'TODO_APP';
 export const TIMERS_APP = 'TIMERS_APP';
 export const ROUTINE_APP = 'ROUTINE_APP';
+export const STREAKS_APP = 'STREAKS_APP';
 
 // =============================================================================
 // Templates
@@ -77,7 +80,7 @@ export const defaultState = {
       id: 2,
       title: 'Clean up',
       description: '---',
-      date: new Date(),
+      date: now(),
       done: false,
       archived: false,
       today: true,
@@ -86,7 +89,7 @@ export const defaultState = {
       id: 3,
       title: 'Clean up done',
       description: '---|||',
-      date: new Date(),
+      date: now(),
       done: true,
       archived: false,
       today: true,
@@ -95,7 +98,7 @@ export const defaultState = {
       id: 4,
       title: 'Clean up someday',
       description: '---|||---',
-      date: new Date(),
+      date: now(),
       done: false,
       archived: false,
       today: true,
@@ -104,7 +107,7 @@ export const defaultState = {
       id: 5,
       title: 'Repeated daily',
       description: '---|||---',
-      date: new Date(),
+      date: now(),
       done: false,
       archived: false,
       today: true,
@@ -119,35 +122,35 @@ export const defaultState = {
       title: 'Wash your face and teeth',
       description: '---',
       duration: 1000 * 60 * 5,
-      date: new Date(),
+      date: now(),
     }, {
       id: 13,
       title: 'Cleanup your room',
       description: '---',
       duration: 1000 * 60 * 5,
-      date: new Date(),
+      date: now(),
     }, {
       id: 14,
       title: 'Meditate',
       description: '---',
       duration: 1000 * 60 * 10,
-      date: new Date(),
+      date: now(),
     }, {
       id: 15,
       title: 'Dress up and get ready to go out',
       description: '---',
       duration: 1000 * 60 * 10,
-      date: new Date(),
+      date: now(),
     }, {
       id: 16,
       title: 'Make breakfast',
       description: '---',
       duration: 1000 * 60 * 20,
-      date: new Date(),
+      date: now(),
     }],
     history: [{
-      start: (new Date()).getTime(),
-      end: (new Date()).getTime(),
+      start: now(),
+      end: now(),
     }],
   }, {
     id: 21,
@@ -156,11 +159,22 @@ export const defaultState = {
     items: [{
       id: 22,
       title: 'Meditation',
-      date: new Date(),
+      date: now(),
       history: [{
-        start: (new Date()).getTime() - 1000 * 60 * 10,
-        end: (new Date()).getTime(),
+        start: now() - 1000 * 60 * 10,
+        end: now(),
       }],
     }],
-  }],
+  }, {
+    id: 31,
+    app: STREAKS_APP,
+    title: 'My Streaks',
+    items: [{
+      id: 32,
+      title: 'Meditation',
+      date: now(),
+      history: [],
+    }],
+  }
+],
 }

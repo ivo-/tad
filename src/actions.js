@@ -134,3 +134,45 @@ export function addTimerHistory(appId, timerId, { start, end }) {
     end,
   };
 }
+
+
+// =============================================================================
+// Streaks
+
+export const STREAKS_ADD_STREAK = 'STREAKS_ADD_STREAK';
+export function addStreak(appId, title) {
+  return {
+    type: STREAKS_ADD_STREAK,
+    appId,
+    title,
+  };
+}
+
+export const STREAKS_DELETE_STREAK = 'STREAKS_DELETE_STREAK';
+export function deleteStreak(appId, streakId) {
+  return {
+    type: STREAKS_DELETE_STREAK,
+    appId,
+    streakId,
+  };
+}
+
+export const STREAKS_UPDATE_STREAK = 'STREAKS_UPDATE_STREAK';
+export function updateStreak(appId, streakId, title) {
+  return {
+    type: STREAKS_UPDATE_STREAK,
+    appId,
+    streakId,
+    title,
+  };
+}
+
+export const STREAKS_ADD_STREAK_HISTORY = 'STREAKS_ADD_STREAK_HISTORY';
+export function addStreakHistory(appId, streakId, date) {
+  return {
+    type: STREAKS_ADD_STREAK_HISTORY,
+    appId,
+    streakId,
+    date,
+  };
+}
