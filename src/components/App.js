@@ -8,6 +8,7 @@ import {
   TIMERS_APP,
   ROUTINE_APP,
   STREAKS_APP,
+  COUNTER_APP,
 } from '../constants';
 
 import Header from './Header';
@@ -17,12 +18,14 @@ import TodoContainer from './Todo/TodoContainer';
 import TimersContainer from './Timers/TimersContainer';
 import RoutineContainer from './Routine/RoutineContainer';
 import StreaksContainer from './Streaks/StreaksContainer';
+import CounterContainer from './Counter/CounterContainer';
 
 const appTypeToComponent = {
   [TODO_APP]: TodoContainer,
   [TIMERS_APP]: TimersContainer,
   [ROUTINE_APP]: RoutineContainer,
   [STREAKS_APP]: StreaksContainer,
+  [COUNTER_APP]: CounterContainer,
 };
 
 class App extends Component {

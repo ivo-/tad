@@ -176,3 +176,34 @@ export function toggleStreakHistory(appId, streakId, date) {
     date,
   };
 }
+
+// =============================================================================
+// Counters
+
+export const COUNTER_ADD_ITEM = 'COUNTER_ADD_ITEM';
+export function addCounterItem(appId, {title, limit}) {
+  return {
+    type: COUNTER_ADD_ITEM,
+    appId,
+    title,
+    limit,
+  };
+}
+
+export const COUNTER_REMOVE_ITEM = 'COUNTER_REMOVE_ITEM';
+export function removeCounterItem(appId, itemId) {
+  return {
+    type: COUNTER_REMOVE_ITEM,
+    appId,
+    itemId,
+  };
+}
+
+export const COUNTER_INCREMENT_ITEM = 'COUNTER_INCREMENT_ITEM';
+export function incrementCounterItem(appId, itemId) {
+  return {
+    type: COUNTER_INCREMENT_ITEM,
+    appId,
+    itemId,
+  };
+}
