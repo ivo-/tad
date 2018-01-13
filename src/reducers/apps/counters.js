@@ -26,7 +26,7 @@ export default function counters(state, action) {
     case COUNTER_REMOVE_ITEM:
       return {
         ...state,
-        items: state.items.filter(item => item.id != action.itemId),
+        items: state.items.filter(item => item.id !== action.itemId),
       };
 
     case COUNTER_INCREMENT_ITEM:

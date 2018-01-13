@@ -27,13 +27,14 @@ class Counter extends React.Component {
     if(!form) return;
 
     const title = form.querySelector('[name=title]').value.trim();
-    const unsanitizedLimit = form.querySelector('[name=limit]').value.trim();
-
-    const limit = Math.abs(+(unsanitizedLimit));
+    const limit = Math.abs(parseInt(
+      form.querySelector('[name=limit]').value.trim(),
+      10
+    ));
 
     form.reset()
 
-    this.handleToggleAddForm(false)();
+    this.handleToggleAddForm();
     this.props.addCounterItem(this.props.id, {title, limit});
   }
 
@@ -43,10 +44,8 @@ class Counter extends React.Component {
     }
   }
 
-  handleToggleAddForm(shown) {
-    return () => {
-      this.setState({addFormShown: shown});
-    }
+  handleToggleAddForm() {
+    this.setState({addFormShown: !this.state.addFormShown});
   }
 
   renderAddForm() {
@@ -65,10 +64,10 @@ class Counter extends React.Component {
               placeholder="Add limit..."
               min="0"
             />
-            <button className="App--form--complete" onClick={this.handleAddItem} >
+            <button onClick={this.handleAddItem} >
               create
             </button>
-            <button className="App--form--close" onClick={this.handleToggleAddForm(false)} >
+            <button className="App--form--close" onClick={this.handleToggleAddForm} >
               close
             </button>
           </form>
@@ -104,7 +103,7 @@ class Counter extends React.Component {
         </header>
         <section className="App--content">
           {this.state.addFormShown ? this.renderAddForm() : null}
-          <button onClick={this.handleToggleAddForm(true)}>+</button>
+          <button onClick={this.handleToggleAddForm}>+</button>
           {this.renderItems()}
         </section>
       </section>
