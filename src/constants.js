@@ -7,6 +7,7 @@ export const TODO_APP = 'TODO_APP';
 export const TIMERS_APP = 'TIMERS_APP';
 export const ROUTINE_APP = 'ROUTINE_APP';
 export const STREAKS_APP = 'STREAKS_APP';
+export const COUNTER_APP = 'COUNTER_APP';
 
 // =============================================================================
 // Templates
@@ -175,6 +176,20 @@ export const defaultState = {
       date: now(),
       history: [],
     }],
-  }
-],
+  }, {
+    id: 33,
+    app: COUNTER_APP,
+    title: 'Workout',
+    items: [{
+      id: 34,
+      title: 'Push-ups',
+      value: 10,
+      limit: 20,
+    }, {
+      id: 35,
+      title: 'Pull-ups',
+      value: 5,
+      limit: 20,
+    }]
+  }],
 }

@@ -58,7 +58,7 @@ export function now() {
 }
 
 /**
- * Returns current timestamp.
+ * Returns first form parent node.
  * @param {HTMLElement?} node
  * @return {HTMLElement?}
  */
