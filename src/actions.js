@@ -176,3 +176,87 @@ export function toggleStreakHistory(appId, streakId, date) {
     date,
   };
 }
+
+// =============================================================================
+// Pomodoro
+
+export const POMODORO_ADD = 'POMODORO_ADD';
+export function addPomodoro(appId, { title, description, duration, tasks }) {
+  return {
+    type: POMODORO_ADD,
+    appId,
+    title,
+    description,
+    duration,
+    tasks,
+  };
+}
+
+export const POMODORO_REMOVE = 'POMODORO_REMOVE';
+export function removePomodoro(appId, pomodoroId) {
+  return {
+    type: POMODORO_REMOVE,
+    appId,
+    pomodoroId,
+  };
+}
+
+export const POMODORO_UPDATE = 'POMODORO_UPDATE';
+export function updatePomodoro(appId, pomodoroId, fields) {
+  return {
+    type: POMODORO_UPDATE,
+    appId,
+    pomodoroId,
+    fields,
+  };
+}
+
+export const POMODORO_TOGGLE_ACHIEVE = 'POMODORO_TOGGLE_ACHIEVE';
+export function toggleArchivePomodoro(appId, pomodoroId) {
+  return {
+    type: POMODORO_TOGGLE_ACHIEVE,
+    appId,
+    pomodoroId,
+  };
+}
+
+export const POMODORO_ADD_TASK = 'POMODORO_ADD_TASK';
+export function addPomodoroTask(appId, pomodoroId, title) {
+  return {
+    type: POMODORO_ADD_TASK,
+    appId,
+    pomodoroId,
+    title,
+  };
+}
+
+export const POMODORO_DELETE_TASK = 'POMODORO_DELETE_TASK';
+export function deletePomodoroTask(appId, pomodoroId, taskId) {
+  return {
+    type: POMODORO_DELETE_TASK,
+    appId,
+    pomodoroId,
+    taskId,
+  };
+}
+
+export const POMODORO_TOGGLE_TASK = 'POMODORO_TOGGLE_TASK';
+export function togglePomodoroTask(appId, pomodoroId, taskId) {
+  return {
+    type: POMODORO_TOGGLE_TASK,
+    appId,
+    pomodoroId,
+    taskId,
+  };
+}
+
+export const POMODORO_EDIT_TASK = 'POMODORO_EDIT_TASK';
+export function editPomodoroTask(appId, pomodoroId, taskId, title) {
+  return {
+    type: POMODORO_EDIT_TASK,
+    appId,
+    pomodoroId,
+    taskId,
+    title,
+  };
+}

@@ -8,4 +8,8 @@ button {
     color: white;
     background-color: maroon;
   }
+
+  &.hidden {
+    display: none;
+  }
 }

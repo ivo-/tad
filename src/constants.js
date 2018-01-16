@@ -7,6 +7,7 @@ export const TODO_APP = 'TODO_APP';
 export const TIMERS_APP = 'TIMERS_APP';
 export const ROUTINE_APP = 'ROUTINE_APP';
 export const STREAKS_APP = 'STREAKS_APP';
+export const POMODORO_APP = 'POMODORO_APP';
 
 // =============================================================================
 // Templates
@@ -175,6 +176,30 @@ export const defaultState = {
       date: now(),
       history: [],
     }],
-  }
-],
-}
+  }, {
+    id: 41,
+    app: POMODORO_APP,
+    title: 'Work pomodoro shit',
+    break: 1000 * 60 * 15,
+    duration: 1000 * 60 * 45,
+    items: [
+      {
+        id: 42,
+        title: 'pomodoro 1',
+        description: '----',
+        duration: 1000 * 60 * 45,
+        tasks: [{
+          id: 43,
+          title: 'Clean up',
+          date: now(),
+          done: false,
+        },],
+        date: now(),
+        started: now(),
+        stopped: null,
+        ended: null,
+        archived: false,
+      },
+    ],
+  }],
+};
