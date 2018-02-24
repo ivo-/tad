@@ -4,10 +4,10 @@ import classnames from 'classnames' ;
 
 import {
   now,
-  getParentForm,
   prettyPrintInMinutes,
   prettyPrintInMinutesAndSeconds,
 } from '../../util';
+import AddEditForm from '../AddEditForm';
 
 // TODO:
 //
@@ -18,22 +18,13 @@ class Routine extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleEdit = this.handleEdit.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-
     this.handleNextTask = this.handleNextTask.bind(this);
-    this.handleToggleAdd = this.handleToggleAdd.bind(this);
     this.handleToggleRun = this.handleToggleRun.bind(this);
     this.handleToggleHistory = this.handleToggleHistory.bind(this);
 
-    this.handleAddRoutineTask = this.handleAddRoutineTask.bind(this);
-    this.handleDeleteRoutineTask = this.handleDeleteRoutineTask.bind(this);
-    this.handleUpdateRoutineTask = this.handleUpdateRoutineTask.bind(this);
-
     this.state = {
       running: null,
-      editedItem: null,
-      addFormShown: false,
       historyShown: false,
     };
   }
@@ -41,32 +32,9 @@ class Routine extends React.Component {
   // ===========================================================================
   // Handlers
 
-  handleEdit(id = null) {
-    this.setState({ editedItem: id });
-  }
-
-  handleToggleAdd() {
-    this.setState({ addFormShown: !this.state.addFormShown });
-  }
 
   handleToggleHistory() {
     this.setState({ historyShown: !this.state.historyShown });
-  }
-
-  handleAddRoutineTask(...args) {
-    this.props.onAddRoutineTask(this.props.id, ...args);
-  }
-
-  handleDeleteRoutineTask(...args) {
-    this.props.onDeleteRoutineTask(this.props.id, ...args);
-  }
-
-  handleUpdateRoutineTask(...args) {
-    this.props.onUpdateRoutineTask(this.props.id, ...args);
-  }
-
-  handleAddRoutineHistory(...args) {
-    this.props.onAddRoutineHistory(this.props.id, ...args);
   }
 
   handleToggleRun() {
@@ -88,24 +56,25 @@ class Routine extends React.Component {
   }
 
   handleNextTask() {
-    if(!this.state.running) return;
-    if(this.state.running.end) return;
+    const { running } = this.state;
+    if(!running) return;
+    if(running.end) return;
 
-    const nextItemIndex = this.state.running.currentTask + 1;
+    const nextItemIndex = running.currentTask + 1;
     const nextItem = this.props.items[nextItemIndex];
-    const currentItem = this.props.items[this.state.running.currentTask];
+    const currentItem = this.props.items[running.currentTask];
 
     if(!nextItem) {
       const nextState = {
         running: {
-          ...this.state.running,
+          ...running,
           end: now(),
           timer: null,
         },
       };
 
-      window.clearInterval(this.state.running.timer);
-      this.handleAddRoutineHistory({
+      window.clearInterval(running.timer);
+      this.props.onAddRoutineHistory({
         end: nextState.running.end,
         start: nextState.running.start,
       });
@@ -113,10 +82,10 @@ class Routine extends React.Component {
     } else {
       this.setState({
         running: {
-          ...this.state.running,
+          ...running,
           currentTask: nextItemIndex,
           tasksTimes: {
-            ...this.state.running.tasksTimes,
+            ...running.tasksTimes,
             [currentItem.id]: now(),
           }
         },
@@ -124,94 +93,70 @@ class Routine extends React.Component {
     }
   }
 
-  handleFormSubmit(e) {
-    const form = getParentForm(e.currentTarget);
-
-    if(!form) return;
-
-    const title = form.querySelector('[name=title]').value.trim();
-    const duration = form.querySelector('[name=duration]').value.trim();
-    const description = form.querySelector('[name=description]').value.trim();
-
+  handleFormSubmit({ title, duration, description }) {
     if(title === '' || duration === '') return;
 
-    form.reset();
-    if(this.state.addFormShown) {
-      this.handleToggleAdd();
-      this.handleAddRoutineTask({
+    if(this.props.addFormShown) {
+      this.props.onToggleAddForm();
+      this.props.onAddRoutineTask({
         title,
         duration: duration * 1000 * 60,
         description: description,
       });
-    } else if(this.state.editedItem) {
-      this.handleUpdateRoutineTask(this.state.editedItem, {
+    } else if(this.props.editedItem) {
+      this.props.onUpdateRoutineTask(this.props.editedItem, {
         title, duration: duration * 1000 * 60, description,
       });
-      this.handleEdit(null);
+      this.props.onClearEdit();
     }
   }
 
   // ===========================================================================
   // Rendering
 
-  renderAddForm(){
-    let data;
+  renderAddEditForm() {
     let submitText;
     let closeCallback;
-
-    if(this.state.addFormShown) {
-      data = {
-        title: '',
-        duration: '',
-        description: '',
-      };
+    if (this.props.addFormShown) {
       submitText = 'create';
-      closeCallback = this.handleToggleAdd;
-    } else if(this.state.editedItem) {
-      data = this.props.items.find(i => i.id === this.state.editedItem);
-      data = {
-        title: data.title,
-        duration: data.duration / 1000 / 60,
-        description: data.description,
-      }
+      closeCallback = this.props.onToggleAddForm;
+    } else if (this.props.editedItem) {
       submitText = 'update';
-      closeCallback = this.handleEdit.bind(this, null);
+      closeCallback = this.props.onClearEdit;
     } else {
       return null;
     }
 
+    const item =
+      this.props.editedItem &&
+      this.props.items.find(i => i.id === this.props.editedItem);
+
     return (
-      <div className="App--form">
-        <div className="App--form--content">
-          <form action="#">
-            <input
-              type="text"
-              name="title"
-              defaultValue={data.title}
-              placeholder="Add task..."
-            />
-            <textarea
-              name="description"
-              defaultValue={data.description}
-              placeholder="Add description..."
-            ></textarea>
-            <input
-              type="number"
-              name="duration"
-              defaultValue={data.duration}
-              placeholder="Duration in minutes..."
-            />
-            <button
-              className="App--form--complete"
-              onClick={this.handleFormSubmit}
-            >{submitText}</button>
-            <button
-              className="App--form--close"
-              onClick={closeCallback}
-            >close</button>
-          </form>
-        </div>
-      </div>
+      <AddEditForm
+        data={[
+          {
+            type: 'input',
+            name: 'title',
+            defaultValue: item ? item.title : '',
+            placeholder: 'Add title...',
+          },
+          {
+            type: 'textarea',
+            name: 'description',
+            defaultValue: item ? item.description : '',
+            placeholder: 'Add description...',
+          },
+          {
+            type: 'number',
+            name: 'duration',
+            defaultValue: item ? item.duration / 1000 / 60 : '',
+            placeholder: 'Add duration...',
+          },
+        ]}
+        submitText={submitText}
+        onClose={closeCallback}
+        onSubmit={this.handleFormSubmit}
+      />
     );
   }
 
@@ -219,8 +164,8 @@ class Routine extends React.Component {
     return (
       <section className="App--menu">
         <button
-          onClick={this.handleToggleAdd}
-          className={classnames({ active: this.state.addFormShown })}
+          onClick={this.props.onToggleAddForm}
+          className={classnames({ active: this.props.addFormShown })}
         >+</button>
         <span className="App--menu--separator">|</span>
         <button
@@ -311,10 +256,10 @@ class Routine extends React.Component {
       <div key={item.id} className="Routine--list--item">
         <button>☰</button> [{prettyPrintInMinutes(item.duration)}] {item.title}
         <button
-          onClick={this.handleEdit.bind(this, item.id)}
+          onClick={this.props.onEdit.bind(this, item.id)}
         >✎</button>
         <button
-          onClick={this.handleDeleteRoutineTask.bind(this, item.id)}
+          onClick={this.props.onDeleteRoutineTask.bind(this, item.id)}
         >✖</button>
       </div>
     ));
@@ -323,7 +268,7 @@ class Routine extends React.Component {
   render() {
     return (
       <section className="App Routine">
-        {this.renderAddForm()}
+        {this.renderAddEditForm()}
         <header>
           <h1>
              <span>&#9776;</span> {this.props.title}
@@ -354,6 +299,15 @@ Routine.propTypes = {
   onDeleteRoutineTask: PropTypes.func.isRequired,
   onUpdateRoutineTask: PropTypes.func.isRequired,
   onAddRoutineHistory: PropTypes.func.isRequired,
+
+  // Editable
+  editedItem: PropTypes.any,
+  onEdit: PropTypes.func.isRequired,
+  onClearEdit: PropTypes.func.isRequired,
+
+  // AddFrom
+  addFormShown: PropTypes.bool.isRequired,
+  onToggleAddForm: PropTypes.func.isRequired,
 };
 
 export default Routine;
