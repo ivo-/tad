@@ -3,124 +3,69 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames' ;
 
 import {
-  now,
   isDayToday,
-  getParentForm,
   getDaysAround,
   timestampToDayAndMonth,
-  prettyPrintInMinutesAndSeconds,
 } from '../../util';
+import AddEditForm from '../AddEditForm';
 
 
 class Streaks extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleToggleAdd = this.handleToggleAdd.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-
-    this.handleAddStreak = this.handleAddStreak.bind(this);
-    this.handleDeleteStreak = this.handleDeleteStreak.bind(this);
-    this.handleUpdateStreak = this.handleUpdateStreak.bind(this);
-    this.handleToggleStreakHistory = this.handleToggleStreakHistory.bind(this);
-
-    this.state = {
-      editedItem: null,
-      addFormShown: false,
-    };
   }
 
   // ===========================================================================
   // Handlers
 
-  handleEdit(id = null) {
-    this.setState({ editedItem: id });
-  }
-
-  handleToggleAdd() {
-    this.setState({ addFormShown: !this.state.addFormShown });
-  }
-
-  handleAddStreak(...args) {
-    this.props.onAddStreak(this.props.id, ...args);
-  }
-
-  handleDeleteStreak(...args) {
-    this.props.onDeleteStreak(this.props.id, ...args);
-  }
-
-  handleUpdateStreak(...args) {
-    this.props.onUpdateStreak(this.props.id, ...args);
-  }
-
-  handleToggleStreakHistory(...args) {
-    this.props.onToggleStreakHistory(this.props.id, ...args);
-  }
-
-  handleFormSubmit(e) {
-    const form = getParentForm(e.currentTarget);
-    if(!form) return;
-
-    const title = form.querySelector('[name=title]').value.trim();
+  handleFormSubmit({ title }) {
     if(title === '') return;
 
-    form.reset();
-    if(this.state.addFormShown) {
-      this.handleToggleAdd();
-      this.handleAddStreak(title);
-    } else if(this.state.editedItem) {
-      this.handleUpdateStreak(this.state.editedItem, title);
-      this.handleEdit(null);
+    if(this.props.addFormShown) {
+      this.props.onToggleAddForm();
+      this.props.onAddStreak(title);
+    } else if(this.props.editedItem) {
+      this.props.onUpdateStreak(this.props.editedItem, { title });
+      this.props.onClearEdit();
     }
   }
 
   // ===========================================================================
   // Rendering
 
-  renderAddForm(){
-    let data;
+  renderAddEditForm() {
     let submitText;
     let closeCallback;
-
-    if(this.state.addFormShown) {
-      data = {
-        title: '',
-      };
+    if (this.props.addFormShown) {
       submitText = 'create';
-      closeCallback = this.handleToggleAdd;
-    } else if(this.state.editedItem) {
-      data = this.props.items.find(i => i.id === this.state.editedItem);
-      data = {
-        title: data.title,
-      }
+      closeCallback = this.props.onToggleAddForm;
+    } else if (this.props.editedItem) {
       submitText = 'update';
-      closeCallback = this.handleEdit.bind(this, null);
+      closeCallback = this.props.onClearEdit;
     } else {
       return null;
     }
 
+    const item =
+      this.props.editedItem &&
+      this.props.items.find(i => i.id === this.props.editedItem);
+
     return (
-      <div className="App--form">
-        <div className="App--form--content">
-          <form action="#">
-            <input
-              type="text"
-              name="title"
-              defaultValue={data.title}
-              placeholder="Add task..."
-            />
-            <button
-              className="App--form--complete"
-              onClick={this.handleFormSubmit}
-            >{submitText}</button>
-            <button
-              className="App--form--close"
-              onClick={closeCallback}
-            >close</button>
-          </form>
-        </div>
-      </div>
+      <AddEditForm
+        data={[
+          {
+            type: 'input',
+            name: 'title',
+            defaultValue: item ? item.title : '',
+            placeholder: 'Add title...',
+          },
+        ]}
+        submitText={submitText}
+        onClose={closeCallback}
+        onSubmit={this.handleFormSubmit}
+      />
     );
   }
 
@@ -140,7 +85,7 @@ class Streaks extends React.Component {
           <input
             type="checkbox"
             checked={!!item.history.find(h => h === day)}
-            onChange={this.handleToggleStreakHistory.bind(this, item.id, day)}
+            onChange={() => this.props.onToggleStreakHistory(item.id, day)}
           />
         </div>
       ));
@@ -149,10 +94,10 @@ class Streaks extends React.Component {
         <div key={item.id} className="Streaks--list--item">
           <button>☰</button> {item.title}
           <button
-            onClick={this.handleEdit.bind(this, item.id)}
+            onClick={this.props.onEdit.bind(this, item.id)}
           >✎</button>
           <button
-            onClick={this.handleDeleteStreak.bind(this, item.id)}
+            onClick={() => this.props.onDeleteStreak(item.id)}
           >✖</button>
           <div className="Streaks--list--item--days">
             {days}
@@ -163,7 +108,7 @@ class Streaks extends React.Component {
 
     return (
       <section className="App Streaks">
-        {this.renderAddForm()}
+        {this.renderAddEditForm()}
         <header>
           <h1>
              <span>&#9776;</span> {this.props.title}
@@ -172,8 +117,8 @@ class Streaks extends React.Component {
         </header>
         <section className="App--content">
           <button
-            onClick={this.handleToggleAdd}
-            className={classnames({ active: this.state.addFormShown })}
+            onClick={this.props.onToggleAddForm}
+            className={classnames({ active: this.props.addFormShown })}
           >+</button>
           {items}
         </section>
@@ -193,6 +138,15 @@ Streaks.propTypes = {
   onDeleteStreak: PropTypes.func.isRequired,
   onUpdateStreak: PropTypes.func.isRequired,
   onToggleStreakHistory: PropTypes.func.isRequired,
+
+  // Editable
+  editedItem: PropTypes.any,
+  onEdit: PropTypes.func.isRequired,
+  onClearEdit: PropTypes.func.isRequired,
+
+  // AddFrom
+  addFormShown: PropTypes.bool.isRequired,
+  onToggleAddForm: PropTypes.func.isRequired,
 };
 
 export default Streaks;

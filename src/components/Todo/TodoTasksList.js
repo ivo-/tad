@@ -4,14 +4,12 @@ import classnames from 'classnames';
 
 import {
   TODAY_LIST,
-  // SOMEDAY_LIST,
-  // ARCHIVE_LIST,
   REPEATED_LIST,
 } from '../../constants';
 
-import { getParentForm } from '../../util';
+import AddEditForm from '../AddEditForm';
 
-
+// TODO: remove this add items component
 class TodoTasksList extends React.Component {
   constructor(props) {
     super(props);
@@ -38,9 +36,9 @@ class TodoTasksList extends React.Component {
 
   handleToggleOptions(id) {
     this.setState({
-      optionsShownList: this.state.optionsShownList.includes(id) ?
-        this.state.optionsShownList.filter(i => i !== id) :
-        [...this.state.optionsShownList, id]
+      optionsShownList: this.state.optionsShownList.includes(id)
+        ? this.state.optionsShownList.filter(i => i !== id)
+        : [...this.state.optionsShownList, id],
     });
   }
 
@@ -48,26 +46,22 @@ class TodoTasksList extends React.Component {
     this.setState({ editedItem: id });
   }
 
-  handleFormSubmit(e) {
-    const form = getParentForm(e.currentTarget);
-    if(!form) return;
+  handleFormSubmit({ title, description }) {
+    if (title === '') return;
 
-    const title = form.querySelector('[name=title]').value.trim();
-    const description = form.querySelector('[name=description]').value.trim();
-
-    if(title === '') return;
-
-    form.reset();
-    if(this.props.addFormShown) {
+    if (this.props.addFormShown) {
       this.props.onToggleAdd();
-      this.props.onAddTodoTask({
+      this.props.onAdd({
         title,
         today: this.props.list === TODAY_LIST,
         repeated: this.props.list === REPEATED_LIST,
         description,
       });
-    } else if(this.state.editedItem) {
-      this.props.onUpdateTodoTask(this.state.editedItem, { title, description });
+    } else if (this.state.editedItem) {
+      this.props.onUpdate(this.state.editedItem, {
+        title,
+        description,
+      });
       this.handleEdit(null);
     }
   }
@@ -75,133 +69,139 @@ class TodoTasksList extends React.Component {
   // ===========================================================================
   // Rendering
 
-  renderListAddForm(){
-    let data;
+  renderAddEditForm() {
     let submitText;
     let closeCallback;
-
-    if(this.props.addFormShown) {
-      data = {
-        title: '',
-        description: '',
-      };
+    if (this.props.addFormShown) {
       submitText = 'create';
-      closeCallback = this.props.onToggleAdd;
-    } else if(this.state.editedItem) {
-      data = this.props.items.find(i => i.id === this.state.editedItem);
+      closeCallback = this.onToggleAdd;
+    } else if (this.state.editedItem) {
       submitText = 'update';
       closeCallback = this.handleEdit.bind(this, null);
     } else {
       return null;
     }
 
+    const item =
+      this.state.editedItem &&
+      this.props.items.find(i => i.id === this.state.editedItem);
+
     return (
-      <div className="Todo--list--form">
-        <div className="Todo--list--form--content">
-          <form action="#">
-            <input
-              type="text"
-              name="title"
-              defaultValue={data.title}
-              placeholder="Add task..."
-            />
-            <textarea
-              name="description"
-              defaultValue={data.description}
-              placeholder="Add description..."
-            ></textarea>
-            <button
-              className="Todo--list--form--complete"
-              onClick={this.handleFormSubmit}
-            >{submitText}</button>
-            <button
-              className="Todo--list--form--close"
-              onClick={closeCallback}
-            >close</button>
-          </form>
-        </div>
-      </div>
+      <AddEditForm
+        data={[
+          {
+            type: 'input',
+            name: 'title',
+            defaultValue: item ? item.title : '',
+            placeholder: 'Add title...',
+          },
+          {
+            type: 'textarea',
+            name: 'description',
+            defaultValue: item ? item.description : '',
+            placeholder: 'Add description...',
+          },
+        ]}
+        submitText={submitText}
+        onClose={closeCallback}
+        onSubmit={this.handleFormSubmit}
+      />
     );
   }
 
   renderExtra(item) {
-    if(item.repeated) {
+    if (item.repeated) {
       return (
-        <button key="someday" onClick={
-          this.props.onAddTodoTask.bind(this, {
+        <button
+          key="someday"
+          onClick={this.props.onAdd.bind(this, {
             title: item.title,
             today: true,
             repeated: false,
             description: item.description,
-          })
-        }>→ add for today</button>
+          })}>
+          → add for today
+        </button>
       );
     }
 
     const results = [];
-    if(item.today) results.push(
-      <button key="someday" onClick={
-        this.props.onUpdateTodoTask.bind(this, item.id, { today: false })
-      }>→ someday</button>
-    );
+    if (item.today)
+      results.push(
+        <button
+          key="someday"
+          onClick={this.props.onUpdate.bind(this, item.id, {
+            today: false,
+          })}>
+          → someday
+        </button>
+      );
 
-    if(!item.today) results.push(
-      <button key="today" onClick={
-        this.props.onUpdateTodoTask.bind(this, item.id, { today: true })
-      }>→ today</button>
-    );
+    if (!item.today)
+      results.push(
+        <button
+          key="today"
+          onClick={this.props.onUpdate.bind(this, item.id, {
+            today: true,
+          })}>
+          → today
+        </button>
+      );
 
-    if(item.archived) results.push(
-      <button key="delete" className="attention" onClick={
-        this.props.onDeleteTodoTask.bind(this, item.id)
-      }>delete!</button>
-    );
+    if (item.archived)
+      results.push(
+        <button
+          key="delete"
+          className="attention"
+          onClick={this.props.onDelete.bind(this, item.id)}>
+          delete!
+        </button>
+      );
 
     return results;
   }
 
   render() {
-    const items = this.props.items.map(item => (
+    const items = this.props.items.map(item =>
       <div
         key={item.id}
         className={classnames('Todo--list--item', {
           'Todo--list--item--done': item.done,
-        })}
-      >
+        })}>
         <input
           type="checkbox"
           checked={item.done}
-          onChange={this.props.onToggleCompleteTodoTask.bind(this, item.id)}
+          onChange={this.props.onToggleComplete.bind(this, item.id)}
         />
         {item.title}
-        <button
-          onClick={this.handleEdit.bind(this, item.id)}
-        >✎</button>
+        <button onClick={this.handleEdit.bind(this, item.id)}>✎</button>
         <button
           title="Archive task"
           className={classnames({ active: item.archived })}
-          onClick={this.props.onToggleArchiveTodoTask.bind(this, item.id)}
-        >✖</button>
+          onClick={this.props.onToggleArchive.bind(this, item.id)}>
+          ✖
+        </button>
         {this.renderExtra(item)}
         <button
           className="Todo--list--item--options--toggle"
-          onClick={this.handleToggleOptions.bind(this, item.id)}
-        >
+          onClick={this.handleToggleOptions.bind(this, item.id)}>
           {this.state.optionsShownList.includes(item.id) ? '▲' : '▼'}
         </button>
         <div className="Todo--list--item--options">
-          {this.state.optionsShownList.includes(item.id) ? (
-            <div className="Todo--list--item--options--content">
-              <p>{item.description}</p>
-            </div>
-          ) : null}
+          {this.state.optionsShownList.includes(item.id)
+            ? <div className="Todo--list--item--options--content">
+                <p>
+                  {item.description}
+                </p>
+              </div>
+            : null}
         </div>
       </div>
-    ));
+    );
 
     return (
       <div className="Todo--list">
-        {this.renderListAddForm()}
+        {this.renderAddEditForm()}
         {items}
       </div>
     );
@@ -214,11 +214,11 @@ TodoTasksList.propTypes = {
   addFormShown: PropTypes.bool.isRequired,
 
   onToggleAdd: PropTypes.func.isRequired,
-  onAddTodoTask: PropTypes.func.isRequired,
-  onDeleteTodoTask: PropTypes.func.isRequired,
-  onUpdateTodoTask: PropTypes.func.isRequired,
-  onToggleArchiveTodoTask: PropTypes.func.isRequired,
-  onToggleCompleteTodoTask: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  onToggleArchive: PropTypes.func.isRequired,
+  onToggleComplete: PropTypes.func.isRequired,
 };
 
 export default TodoTasksList;

@@ -1,4 +1,3 @@
-
 /**
  * Check if provided timestamp is today.
  * @param {Number} date

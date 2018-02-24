@@ -3,7 +3,11 @@
 
 ** Roadmap
 
-  - [ ] Publish and task for Kamen
+  - [ ] Use memoized partial
+  - [ ] Fighweel like development
+  - [ ] Add a list of ready to do tasks
+  - [ ] Logger middleware with action and both states
+  - [ ] prettier
 
 ** Install
 

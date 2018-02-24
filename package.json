@@ -4,14 +4,12 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
+    "navx": "git@github.com:ivo-/navx.git",
+    "bund": "git@github.com:ivo-/bund.git",
     "node-sass-chokidar": "0.0.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
     "react-scripts": "0.9.5",
-    "redux": "^3.7.2",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1"
   },
   "devDependencies": {},
