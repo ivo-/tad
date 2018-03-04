@@ -19,7 +19,7 @@ export function isDateToday(date) {
  */
 export function getUID() {
   const current = window.localStorage.getItem('__tad__uid') || getUID.__initial;
-  const next = current + 1;
+  const next = current * 1 + 1;
 
   window.localStorage.setItem('__tad__uid', next);
   return next;

@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import PomodoroItem from './PomodoroItem';
+import Detached from '../Detached';
 import AddEditForm from '../AddEditForm';
+import PomodoroItem from './PomodoroItem';
+
 import { now, prettyPrintInMinutesAndSeconds } from '../../util';
 
 // TODO:
@@ -142,7 +144,7 @@ class Pomodoro extends React.Component {
     let closeCallback;
     if (this.props.addFormShown) {
       submitText = 'create';
-      closeCallback = this.props.onToggleAdd;
+      closeCallback = this.props.onToggleAddForm;
     } else if (this.props.editedItem) {
       submitText = 'update';
       closeCallback = this.props.onClearEdit;
@@ -193,20 +195,16 @@ class Pomodoro extends React.Component {
     );
   }
 
-  renderItem(item) {
+  renderItem({ id }) {
     return (
-      <PomodoroItem
-        key={item.id}
-        item={item}
-        onEdit={this.props.onEdit.bind(this, item.id)}
-        onStart={this.handleStartPomodoro.bind(this, item.id)}
-        onDelete={this.props.onRemovePomodoro.bind(this, item.id)}
-        onAddTask={this.props.onAddPomodoroTask.bind(this, item.id)}
-        onEditTask={this.props.onEditPomodoroTask.bind(this, item.id)}
-        onDeleteTask={this.props.onDeletePomodoroTask.bind(this, item.id)}
-        onToggleTask={this.props.onTogglePomodoroTask.bind(this, item.id)}
-        onToggleArchive={this.props.onToggleArchivePomodoro.bind(this, item.id)}
-      />
+      <Detached key={id}>
+        <PomodoroItem
+          key={id}
+          id={id}
+          onStart={this.handleStartPomodoro}
+          onEdit={this.props.onEdit}
+        />
+      </Detached>
     );
   }
 
@@ -286,14 +284,7 @@ Pomodoro.propTypes = {
 
   // Actions
   onAddPomodoro: PropTypes.func.isRequired,
-  onRemovePomodoro: PropTypes.func.isRequired,
   onUpdatePomodoro: PropTypes.func.isRequired,
-  onToggleArchivePomodoro: PropTypes.func.isRequired,
-
-  onAddPomodoroTask: PropTypes.func.isRequired,
-  onEditPomodoroTask: PropTypes.func.isRequired,
-  onDeletePomodoroTask: PropTypes.func.isRequired,
-  onTogglePomodoroTask: PropTypes.func.isRequired,
 
   // Editable
   editedItem: PropTypes.number,

@@ -12,24 +12,11 @@ export default comp(
       _,
       {
         add,
-        remove,
         update,
-        toggleArchived,
-        addTask,
-        removeTask,
-        toggleTask,
-        updateTask,
       }
     ) => ({
       onAddPomodoro: add,
-      onRemovePomodoro: remove,
       onUpdatePomodoro: update,
-      onToggleArchivePomodoro: toggleArchived,
-
-      onAddPomodoroTask: addTask,
-      onEditPomodoroTask: updateTask,
-      onDeletePomodoroTask: removeTask,
-      onTogglePomodoroTask: toggleTask,
     }),
   }),
   connect(bundle(addForm), { selectAll: true }),

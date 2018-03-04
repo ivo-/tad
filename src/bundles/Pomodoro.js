@@ -48,14 +48,14 @@ export function add(state, data) {
 const itemRoute = id =>
   ['items', EACH, item => item.id === id];
 
-const tasksRoute = id =>
+const itemTasksRoute = id =>
   [...itemRoute(id), 'tasks'];
 
 const taskRoute = (id, taskId) =>
-  [...tasksRoute(id), item => item.id !== taskId];
+  [...itemTasksRoute(id), EACH, task => task.id === taskId];
 
 export function addTask(state, id, title) {
-  return setval([...tasksRoute(id), AFTER_ELEM], {
+  return setval([...itemTasksRoute(id), AFTER_ELEM], {
     id: getUID(),
     title: title,
     date: now(),
@@ -65,7 +65,7 @@ export function addTask(state, id, title) {
 
 export function removeTask(state, id, taskId) {
   return transform(
-    tasksRoute(id),
+    itemTasksRoute(id),
     v => v.filter(item => item.id !== taskId),
     state
   );
@@ -73,7 +73,7 @@ export function removeTask(state, id, taskId) {
 
 export function toggleTask(state, id, taskId) {
   return transform(
-    [taskRoute(id, taskId), 'done'],
+    [...taskRoute(id, taskId), 'done'],
     v => !v,
     state
   );
