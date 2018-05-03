@@ -6,4 +6,4 @@
 
 This project is mostly a demonstration of using
 [navx](https://github.com/ivo-/navx) and [bund](https://github.com/ivo-/bund)
-for kind a real world React application.
+for kind of a real world React application.
