@@ -7,7 +7,7 @@ import {
   SOMEDAY_LIST,
   ARCHIVE_LIST,
   REPEATED_LIST,
-} from '../../constants';
+} from './constants';
 
 import TodoTasksList from './TodoTasksList';
 

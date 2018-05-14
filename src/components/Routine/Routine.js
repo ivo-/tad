@@ -74,7 +74,7 @@ class Routine extends React.Component {
       };
 
       window.clearInterval(running.timer);
-      this.props.onAddRoutineHistory({
+      this.props.onAddHistory({
         end: nextState.running.end,
         start: nextState.running.start,
       });
@@ -98,13 +98,13 @@ class Routine extends React.Component {
 
     if(this.props.addFormShown) {
       this.props.onToggleAddForm();
-      this.props.onAddRoutineTask({
+      this.props.onAddTask({
         title,
         duration: duration * 1000 * 60,
         description: description,
       });
     } else if(this.props.editedItem) {
-      this.props.onUpdateRoutineTask(this.props.editedItem, {
+      this.props.onUpdateTask(this.props.editedItem, {
         title, duration: duration * 1000 * 60, description,
       });
       this.props.onClearEdit();
@@ -259,7 +259,7 @@ class Routine extends React.Component {
           onClick={this.props.onEdit.bind(this, item.id)}
         >✎</button>
         <button
-          onClick={this.props.onDeleteRoutineTask.bind(this, item.id)}
+          onClick={this.props.onDeleteTask.bind(this, item.id)}
         >✖</button>
       </div>
     ));
@@ -295,10 +295,10 @@ Routine.propTypes = {
   history: PropTypes.array.isRequired,
 
   // Actions
-  onAddRoutineTask: PropTypes.func.isRequired,
-  onDeleteRoutineTask: PropTypes.func.isRequired,
-  onUpdateRoutineTask: PropTypes.func.isRequired,
-  onAddRoutineHistory: PropTypes.func.isRequired,
+  onAddTask: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
+  onUpdateTask: PropTypes.func.isRequired,
+  onAddHistory: PropTypes.func.isRequired,
 
   // Editable
   editedItem: PropTypes.any,

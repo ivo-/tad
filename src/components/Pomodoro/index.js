@@ -15,8 +15,8 @@ export default comp(
         update,
       }
     ) => ({
-      onAddPomodoro: add,
-      onUpdatePomodoro: update,
+      onAdd: add,
+      onUpdate: update,
     }),
   }),
   connect(bundle(addForm), { selectAll: true }),

@@ -43,7 +43,7 @@ class Timers extends React.Component {
     const timerData = startedTimers.find(data => data.id === id);
 
     if (timerData) {
-      this.props.onAddTimerHistory(id, {
+      this.props.onAddHistory(id, {
         start: timerData.start,
         end: now(),
       });
@@ -67,9 +67,9 @@ class Timers extends React.Component {
   handleFormSubmit({ title }) {
     if (this.props.addFormShown) {
       this.props.onToggleAddForm();
-      this.props.onAddTimer(title);
+      this.props.onAdd(title);
     } else if (this.props.editedItem) {
-      this.props.onUpdateTimer(this.props.editedItem, { title });
+      this.props.onUpdate(this.props.editedItem, { title });
       this.props.onClearEdit();
     }
   }
@@ -129,7 +129,7 @@ class Timers extends React.Component {
           </button>
           [{prettyPrintInMinutesAndSeconds(totalTime)}]
           <button onClick={this.props.onEdit.bind(this, item.id)}>✎</button>
-          <button onClick={this.props.onDeleteTimer.bind(this, item.id)}>
+          <button onClick={this.props.onDelete.bind(this, item.id)}>
             ✖
           </button>
         </div>
@@ -164,10 +164,10 @@ Timers.propTypes = {
   title: PropTypes.string.isRequired,
 
   // Actions
-  onAddTimer: PropTypes.func.isRequired,
-  onDeleteTimer: PropTypes.func.isRequired,
-  onUpdateTimer: PropTypes.func.isRequired,
-  onAddTimerHistory: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  onAddHistory: PropTypes.func.isRequired,
 
   // Editable
   editedItem: PropTypes.any,

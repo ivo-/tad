@@ -25,9 +25,9 @@ class Streaks extends React.Component {
 
     if(this.props.addFormShown) {
       this.props.onToggleAddForm();
-      this.props.onAddStreak(title);
+      this.props.onAdd(title);
     } else if(this.props.editedItem) {
-      this.props.onUpdateStreak(this.props.editedItem, { title });
+      this.props.onUpdate(this.props.editedItem, { title });
       this.props.onClearEdit();
     }
   }
@@ -85,7 +85,7 @@ class Streaks extends React.Component {
           <input
             type="checkbox"
             checked={!!item.history.find(h => h === day)}
-            onChange={() => this.props.onToggleStreakHistory(item.id, day)}
+            onChange={() => this.props.onToggleHistory(item.id, day)}
           />
         </div>
       ));
@@ -97,7 +97,7 @@ class Streaks extends React.Component {
             onClick={this.props.onEdit.bind(this, item.id)}
           >✎</button>
           <button
-            onClick={() => this.props.onDeleteStreak(item.id)}
+            onClick={() => this.props.onDelete(item.id)}
           >✖</button>
           <div className="Streaks--list--item--days">
             {days}
@@ -134,10 +134,10 @@ Streaks.propTypes = {
   title: PropTypes.string.isRequired,
 
   // Actions
-  onAddStreak: PropTypes.func.isRequired,
-  onDeleteStreak: PropTypes.func.isRequired,
-  onUpdateStreak: PropTypes.func.isRequired,
-  onToggleStreakHistory: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  onToggleHistory: PropTypes.func.isRequired,
 
   // Editable
   editedItem: PropTypes.any,

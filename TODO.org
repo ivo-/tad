@@ -8,11 +8,17 @@
   - [ ] Add a list of ready to do tasks
   - [ ] Logger middleware with action and both states
   - [ ] prettier
+  - [ ] gh-pges deploy
+  - [ ] https://firebase.google.com/
+  - [ ] Last emails app -> integration
+  - [ ] Calendar events today integration
 
-** Install
+  - [ ] Nested bundle in TODO
+  - [ ] TODO MVC, based on redux one
+  - [ ] Add app remove, change title, options for width/height
+  - [ ] Add grid layout
 
-  - [ ] redux
-  - [ ] eslint
+  - [ ] Make apps usable
 
 * Структура
 

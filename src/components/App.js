@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Header from './Header';
 
 import Todo from './Todo';
+import Image from './Image';
 import Timers from './Timers';
 import Streaks from './Streaks';
 import Routine from './Routine';
@@ -14,6 +15,7 @@ class App extends Component {
       <div className="tad">
         <Header />
         <Todo />
+        <Image />
         <Timers />
         <Streaks />
         <Routine />

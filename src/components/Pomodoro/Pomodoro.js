@@ -121,14 +121,14 @@ class Pomodoro extends React.Component {
 
     if (this.props.addFormShown) {
       this.props.onToggleAddForm();
-      this.props.onAddPomodoro({
+      this.props.onAdd({
         title,
         task: [],
         description,
         duration: this.props.duration,
       });
     } else if (this.props.editedItem) {
-      this.props.onUpdatePomodoro(this.props.editedItem, {
+      this.props.onUpdate(this.props.editedItem, {
         title,
         description,
       });
@@ -283,8 +283,8 @@ Pomodoro.propTypes = {
   duration: PropTypes.number.isRequired,
 
   // Actions
-  onAddPomodoro: PropTypes.func.isRequired,
-  onUpdatePomodoro: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 
   // Editable
   editedItem: PropTypes.number,

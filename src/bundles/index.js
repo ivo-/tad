@@ -5,12 +5,14 @@ import PomodoroSpec from './Pomodoro';
 import RoutineSpec from './Routine';
 import StreaksSpec from './Streaks';
 import TimersSpec from './Timers';
+import ImageSpec from './Image';
 import TodoSpec from './Todo';
 
 export const Pomodoro = bundle(PomodoroSpec);
 export const Routine = bundle(RoutineSpec);
 export const Streaks = bundle(StreaksSpec);
 export const Timers = bundle(TimersSpec);
+export const Image = bundle(ImageSpec);
 export const Todo = bundle(TodoSpec);
 
 const App = combine(
@@ -18,8 +20,10 @@ const App = combine(
   Routine,
   Streaks,
   Timers,
+  Image,
   Todo,
 );
+
 
 export default App;
 
@@ -118,5 +122,4 @@ function setInitialData() {
 
   // Timers
   Timers.add('Meditation');
-
 }

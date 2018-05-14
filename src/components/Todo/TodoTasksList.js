@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import {
   TODAY_LIST,
   REPEATED_LIST,
-} from '../../constants';
+} from './constants';
 
 import AddEditForm from '../AddEditForm';
 

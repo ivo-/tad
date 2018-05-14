@@ -9,10 +9,10 @@ export default comp(
     select: state => ({ ...state }),
 
     selectOnce: (_, { add, remove, update, addHistory }) => ({
-      onAddRoutineTask: add,
-      onDeleteRoutineTask: remove,
-      onUpdateRoutineTask: update,
-      onAddRoutineHistory: addHistory,
+      onAddTask: add,
+      onDeleteTask: remove,
+      onUpdateTask: update,
+      onAddHistory: addHistory,
     }),
   }),
   connect(bundle(addForm), { selectAll: true }),

@@ -22,6 +22,7 @@ export default connect(
       { id, onEdit, onStart }
     ) => ({
       onEdit: onEdit.bind(this, id),
+      onStart: onStart.bind(this, id),
       onDelete: remove.bind(this, id),
       onAddTask: addTask.bind(this, id),
       onEditTask: updateTask.bind(this, id),
