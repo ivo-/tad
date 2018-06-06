@@ -10,6 +10,7 @@
   - [ ] prettier
   - [ ] gh-pges deploy
   - [ ] https://firebase.google.com/
+  - [ ] https://github.com/wiredjs/wired-elements
   - [ ] Last emails app -> integration
   - [ ] Calendar events today integration
 
