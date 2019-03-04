@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Image({ src, title, editedItem, onEdit, onClearEdit }) {
-  debugger;
   return (
     <section className="App Image">
       <header>
@@ -20,7 +19,7 @@ export default function Image({ src, title, editedItem, onEdit, onClearEdit }) {
               onBlur={onClearEdit}
             />
           : <div>
-              <img src={src} alt={title} />
+              <img src={src} alt={title} className="Image--img" />
               <button onClick={onEdit}>Edit</button>
             </div>}
       </section>

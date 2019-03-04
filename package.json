@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bund": "0.0.5",
     "classnames": "^2.2.5",
-    "navx": "git@github.com:ivo-/navx.git",
-    "bund": "git@github.com:ivo-/bund.git",
+    "navx": "^0.1.1",
     "node-sass-chokidar": "0.0.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-grid-layout": "^0.16.6",
     "react-scripts": "0.9.5",
     "reselect": "^3.0.1"
   },

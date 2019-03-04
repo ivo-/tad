@@ -20,6 +20,17 @@
   - [ ] Add grid layout
 
   - [ ] Make apps usable
+  - [ ] Connect to other app button
+  - [ ] Abstract storage, firebase, then replace with other
+
+  - bund
+
+    - remove text, just present
+    - What if we could write state management logic as pure functions and data
+    - then bundle it together in a single state identity holder, even bundle
+      bundles
+    - then use it as if it is a single object or use the parts separately when
+      isolation or encapsulation is desired
 
 * Структура
 
@@ -61,6 +72,13 @@
 
 ** Finance app част
 ** Timetable with all the data
+
+** WbW widgets [0/2]
+
+How cool it would be? Especially with the hand-drawn components design.
+
+   - [ ] Life in weeks
+   - [ ] Career path adviser
 
 * Other
 

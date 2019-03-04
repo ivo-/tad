@@ -114,8 +114,9 @@ class Todo extends React.Component {
   }
 
   render() {
+    // TODO: use app classes
     return (
-      <section className="Todo">
+      <section className="App">
         <header>
           <h1>
             <span>&#9776;</span> {this.props.title}
